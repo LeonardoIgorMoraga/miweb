@@ -1,0 +1,66 @@
+/* Establecer el fondo gris */
+body {
+    background-color: #f0f0f0; /* Código de color gris */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Estilo para el contenedor principal */
+.container {
+    text-align: center;
+    background-color: purple; /* Color de fondo morado */
+    color: white; /* Color del texto */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Añadir posición relativa para elementos hijos */
+}
+
+/* Estilo para el formulario */
+form {
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 10px; /* Espacio entre el texto y el formulario */
+    position: relative; /* Añadir posición relativa para elementos hijos */
+}
+
+/* Estilo para ocultar el texto "Iniciar Sesión" */
+.container h1 {
+    display: none;
+}
+
+/* Estilo para los campos de entrada */
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilo para el botón */
+button {
+    background-color: purple; /* Color de fondo morado para el botón */
+    color: white; /* Color del texto en el botón */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Cambiar el color del enlace en el formulario */
+a {
+    color: purple; /* Color de enlace morado */
+    text-decoration: none;
+}
+
+/* Cambiar el color del enlace al pasar el mouse sobre él */
+a:hover {
+    color: #800080; /* Cambiar a un tono más oscuro de morado al pasar el mouse */
+}
