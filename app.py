@@ -1,17 +1,28 @@
 from dotenv import load_dotenv
 import os
 import mysql.connector
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from config import config
 
 #crear la instancia flask
 app = Flask(__name__)
 
-# Definir una ruta para la página de inicio
 @app.route('/')
-def inicio():
+def index():
+    return redirect(url_for('login'))
+
+
+# Definir una ruta para la página de inicio
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
     #return "Bienvenido a mi página web de inicio de sesión"
-    return render_template('index.html')
+    # return render_template('index.html')
+    if request.method == 'POST':
+        print(request.form['usuario'])
+        print(request.form['contraseña'])
+        return render_template('auth/index.html')
+    else:
+        return render_template('auth/index.html')
 
 if __name__=='__main__':
     app.config.from_object(config['development'])
