@@ -1,42 +1,44 @@
+from flask import Flask, render_template, request, redirect, url_for, session
+import mysql.connector
 from dotenv import load_dotenv
 import os
-import mysql.connector
-from flask import Flask, render_template, request, redirect
-from config import config
 
-#crear la instancia flask
-app = Flask(__name__)
+resultado = None
 
-@app.route('/')
-def index():
-    return redirect(url_for('login'))
-
-
-# Definir una ruta para la página de inicio
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
-    #return "Bienvenido a mi página web de inicio de sesión"
-    # return render_template('index.html')
-    if request.method == 'POST':
-        print(request.form['usuario'])
-        print(request.form['contraseña'])
-        return render_template('auth/index.html')
-    else:
-        return render_template('auth/index.html')
-
-if __name__=='__main__':
-    app.config.from_object(config['development'])
-    app.run() #aqui tambien se puede cambiar el puerto, pero lo dejare por defecto..
-    #luego preguntarle a nepu el porque ahora puedo modificar el servidor en tiempo real, esta en depuracion...
-
-#cargar las variables de entorno que deseo proteger
+# Cargar las variables de entorno desde .env
 load_dotenv()
 
-#creando la coneccion a mi base de datos
-baseDeDatos = mysql.connector.connect(
-    host=os.environ.get("DB_HOST"),
-    user=os.environ.get("DB_USER"),
-    password=os.environ.get("DB_PASSWORD"),
-    database=os.environ.get("DB_DATABASE")
+# Crear una instancia de la aplicación Flask
+app = Flask(__name__)
+# app.secret_key = os.getenv("SECRET_KEY")
+
+# Conectar a la base de datos
+db = mysql.connector.connect(
+    host=os.getenv("DB_HOST"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_DATABASE")
 )
 
+# Ruta para la página de inicio de sesión
+@app.route("/", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # verificamos usuario y contraseña
+        cursor = db.cursor()
+        cursor.execute("SELECT email FROM usuario WHERE username = %s AND password = %s", (username, password))
+        resultado = cursor.fetchone()
+        cursor.close() #buena practica
+
+        if resultado:
+            return "Bienvenid@, tu correo es " + resultado[0]
+        else:
+            return "Datos incorrectos..."
+    
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run()
